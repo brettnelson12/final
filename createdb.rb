@@ -5,31 +5,37 @@ DB = Sequel.connect(connection_string)                                          
 #######################################################################################
 
 # Database schema - this should reflect your domain model
-DB.create_table! :events do
+DB.create_table! :courses do
   primary_key :id
   String :title
   String :description, text: true
-  String :date
+  String :par
   String :location
 end
-DB.create_table! :rsvps do
+DB.create_table! :reviews do
   primary_key :id
-  foreign_key :event_id
-  Boolean :going
+  foreign_key :course_id
   String :name
   String :email
+  String :date_played 
   String :comments, text: true
+end
+DB.create_table! :users do
+  primary_key :id
+  String :name
+  String :email
+  String :password
 end
 
 # Insert initial (seed) data
-events_table = DB.from(:events)
+courses_table = DB.from(:courses)
 
-events_table.insert(title: "Bacon Burger Taco Fest", 
-                    description: "Here we go again bacon burger taco fans, another Bacon Burger Taco Fest is here!",
-                    date: "June 21",
-                    location: "Kellogg Global Hub")
+courses_table.insert(title: "Pebble Beach Golf Links", 
+                    description: "Widely regarded as one of the most beautiful courses in the world, it hugs the rugged coastline and has wide open views of Carmel Bay, opening to the Pacific Ocean on the south side of the Monterey Peninsula.",
+                    par: "72",
+                    location: "Pebble Beach, California")
 
-events_table.insert(title: "Kaleapolooza", 
-                    description: "If you're into nutrition and vitamins and stuff, this is the event for you.",
-                    date: "July 4",
-                    location: "Nowhere")
+courses_table.insert(title: "Whistling Straits Golf Course", 
+                    description: "Whistling Straits is one of two 36-hole links-style golf courses associated with The American Club, a luxury golf resort located near Sheboygan, Wisconsin, and owned by a subsidiary of the Kohler Company.",
+                    par: "72",
+                    location: "Sheboygan, Wisconsin")
