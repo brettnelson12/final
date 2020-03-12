@@ -17,7 +17,8 @@ DB.create_table! :reviews do
   foreign_key :course_id
   String :name
   String :email
-  String :date_played 
+  String :date_played
+  Boolean :going 
   String :comments, text: true
 end
 DB.create_table! :users do
