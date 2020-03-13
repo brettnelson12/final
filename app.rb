@@ -19,6 +19,9 @@ reviews_table = DB.from(:reviews)
 users_table = DB.from(:users)
 
 
+before do
+    @current_user = users_table.where(id: session["user_id"]).to_a[0]
+end
 
 get "/" do
     puts courses_table.all
@@ -30,11 +33,13 @@ get "/courses/:id" do
     @course = courses_table.where(id: params[:id]).to_a[0]
     @reviews = reviews_table.where(course_id: @course[:id])
     @users_table = users_table
+    @lat = courses_table.where(id: params[:id]).to_a[0]
+    @long = courses_table.where(id: params[:id]).to_a[0]
     view "course"
 end
 
 get "/courses/:id/reviews/new" do
-    @course = events_table.where(id: params[:id]).to_a[0]
+    @course = courses_table.where(id: params[:id]).to_a[0]
     view "new_review"
 end
 

@@ -11,13 +11,15 @@ DB.create_table! :courses do
   String :description, text: true
   String :par
   String :location
+  String :lat
+  String :long
 end
 DB.create_table! :reviews do
   primary_key :id
   foreign_key :course_id
+  foreign_key :user_id
   String :name
   String :email
-  String :date_played
   Boolean :going 
   String :comments, text: true
 end
@@ -34,9 +36,13 @@ courses_table = DB.from(:courses)
 courses_table.insert(title: "Pebble Beach Golf Links", 
                     description: "Widely regarded as one of the most beautiful courses in the world, it hugs the rugged coastline and has wide open views of Carmel Bay, opening to the Pacific Ocean on the south side of the Monterey Peninsula.",
                     par: "72",
-                    location: "Pebble Beach, California")
+                    location: "Pebble Beach, California",
+                    lat: "36.568806",
+                    long: "-121.950624")
 
 courses_table.insert(title: "Whistling Straits Golf Course", 
                     description: "Whistling Straits is one of two 36-hole links-style golf courses associated with The American Club, a luxury golf resort located near Sheboygan, Wisconsin, and owned by a subsidiary of the Kohler Company.",
                     par: "72",
-                    location: "Sheboygan, Wisconsin")
+                    location: "Sheboygan, Wisconsin",
+                    lat: "43.8511",
+                    long: "-87.7351")
