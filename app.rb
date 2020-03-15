@@ -2,7 +2,8 @@
 require "sinatra"                                                                     #
 require "sinatra/reloader" if development?                                            #
 require "sequel"                                                                      #
-require "logger"                                                                      #
+require "logger"
+require "geocoder"                                                          #
 require "twilio-ruby"                                                                 #
 require "bcrypt"                                                                      #
 connection_string = ENV['DATABASE_URL'] || "sqlite://#{Dir.pwd}/development.sqlite3"  #
@@ -26,6 +27,7 @@ end
 get "/" do
     puts courses_table.all
     @courses = courses_table.all.to_a
+
     view "courses"
 end
 
@@ -33,8 +35,12 @@ get "/courses/:id" do
     @course = courses_table.where(id: params[:id]).to_a[0]
     @reviews = reviews_table.where(course_id: @course[:id])
     @users_table = users_table
-    @lat = courses_table.where(id: params[:id]).to_a[0]
-    @long = courses_table.where(id: params[:id]).to_a[0]
+    @location = courses_table.where(id: params[:id]).to_a[0]
+    
+    results = Geocoder.search(@course[:location])
+    @lat_long = results.first.coordinates
+    @lat = "#{@lat_long [0]}"
+    @long = "#{@lat_long [1]}"
     view "course"
 end
 
@@ -85,3 +91,5 @@ get "/logout" do
     @current_user = nil
     view "logout"
 end
+
+
